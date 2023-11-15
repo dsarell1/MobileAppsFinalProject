@@ -11,6 +11,14 @@ import GameplayKit
 
 class GameViewController: UIViewController {
 
+    @IBOutlet weak var scoreLabel: UILabel!
+    var score = 0 {
+        didSet {
+            self.scoreLabel.text = "Score: \(self.score)"
+            self.view.bringSubviewToFront(self.scoreLabel)
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
