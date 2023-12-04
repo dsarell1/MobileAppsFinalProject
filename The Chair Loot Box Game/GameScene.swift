@@ -10,8 +10,19 @@ import GameplayKit
 import UIKit
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
-    
+
+    var scoreLabel: SKLabelNode!
+    var score = 0 {
+        didSet {
+            self.scoreLabel.text = "Score: \(self.score)"
+        }
+    }
     var player: SKSpriteNode!
+    
+    var gameTimer: Timer!
+    
+    let alienCategory: UInt32 = 0x1 << 1
+    let blasterCategory: UInt32 = 0x1 << 1
     
     override func didMove(to view: SKView) {
         
@@ -23,8 +34,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.physicsWorld.gravity = CGVector(dx: 0, dy: 0)
         self.physicsWorld.contactDelegate = self
         
+        scoreLabel = SKLabelNode(text: "Score: 0")
+        scoreLabel.position = CGPoint(x: -100, y: 500)
+        scoreLabel.fontSize = 50
+        scoreLabel.fontColor = UIColor.white
+        score = 0
+        self.addChild(scoreLabel)
         
-        
+        gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(addChairAlien), userInfo: nil, repeats: true)
         
 //        // Get label node from scene and store it for use later
 //        self.label = self.childNode(withName: "//helloLabel") as? SKLabelNode
@@ -93,6 +110,33 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 //    }
 //    
 //    
+    
+    @objc func addChairAlien() {
+        let alien = SKSpriteNode(imageNamed: "ChairAlien.png")
+        alien.size = CGSize(width: 75.0, height: 75.0)
+        let randomAlienPosition = GKRandomDistribution(lowestValue: -300, highestValue: 300)
+
+        let position = CGFloat(randomAlienPosition.nextInt())
+        
+        alien.position = CGPoint(x: position, y: (self.view?.frame.size.height ?? 10) + alien.size.height)
+        
+        alien.physicsBody = SKPhysicsBody(rectangleOf: alien.size)
+        alien.physicsBody?.isDynamic = true
+        
+        alien.physicsBody?.categoryBitMask = alienCategory
+        alien.physicsBody?.contactTestBitMask = blasterCategory
+        alien.physicsBody?.collisionBitMask = 0
+        self.addChild(alien)
+        let animationDur = 6.0
+        var actionArray = [SKAction]()
+        actionArray.append(SKAction.move(to: CGPoint(x: position, y: -alien.size.height - 600), duration: animationDur))
+        actionArray.append(SKAction.removeFromParent())
+        alien.run(SKAction.sequence(actionArray))
+    }
+    func fireBlast() {
+        
+    }
+    
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
     }
