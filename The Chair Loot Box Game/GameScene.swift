@@ -109,7 +109,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 //        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
 //    }
 //    
-//    
+//
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        fireBlast()
+    }
     
     @objc func addChairAlien() {
         let alien = SKSpriteNode(imageNamed: "ChairAlien.png")
@@ -134,6 +137,43 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         alien.run(SKAction.sequence(actionArray))
     }
     func fireBlast() {
+        //self.run(SKAction.playSoundFileNamed("sound file", waitForCompletion: false))
+        let blastNode = SKSpriteNode(imageNamed: "Spaceship Blast.png")
+        blastNode.position = player.position
+        blastNode.position.y += 5
+        blastNode.physicsBody = SKPhysicsBody(circleOfRadius: blastNode.size.width / 2)
+        blastNode.physicsBody?.isDynamic = true
+        blastNode.physicsBody?.categoryBitMask = blasterCategory
+        blastNode.physicsBody?.contactTestBitMask = alienCategory
+        blastNode.physicsBody?.collisionBitMask = 0
+        blastNode.physicsBody?.usesPreciseCollisionDetection = true
+        
+        self.addChild(blastNode)
+        
+        let animationDur2 = 0.3
+        var actionArray = [SKAction]()
+        actionArray.append(SKAction.move(to: CGPoint(x: player.position.x, y: self.frame.size.height + 10), duration: animationDur2))
+        actionArray.append(SKAction.removeFromParent())
+        blastNode.run(SKAction.sequence(actionArray))
+    }
+    
+    func didBegin(_ contact: SKPhysicsContact) {
+        var firstBody:SKPhysicsBody
+        var secondBody:SKPhysicsBody
+        if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask {
+            firstBody = contact.bodyA
+            secondBody = contact.bodyB
+        }
+        else {
+            secondBody = contact.bodyA
+            firstBody = contact.bodyB
+        }
+        
+        if (firstBody.categoryBitMask & blasterCategory) != 0 && (secondBody.categoryBitMask & alienCategory) != 0 {
+            
+        }
+    }
+    func blastCollideWithChair(blast:SKSpriteNode, alien:SKSpriteNode) {
         
     }
     
