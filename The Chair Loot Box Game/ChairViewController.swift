@@ -10,7 +10,7 @@ import UIKit
 
 class ChairViewController: UIViewController {
     
-    let lootBoxPrice = 300
+    let lootBoxPrice = 100
 
     @IBOutlet weak var totalScore: UILabel!
     @IBOutlet weak var costLabel: UILabel!

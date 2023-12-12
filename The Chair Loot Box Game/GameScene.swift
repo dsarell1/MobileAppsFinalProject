@@ -30,6 +30,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var player: SKSpriteNode!
     
     var gameTimer: Timer!
+    var alienSpawnRate = 1.0
     
     let motionManager = CMMotionManager()
     var xAcceleration: CGFloat = 0
@@ -58,7 +59,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             score = 0
             self.addChild(scoreLabel)
             
-            gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(addChairAlien), userInfo: nil, repeats: true)
+            gameTimer = Timer.scheduledTimer(timeInterval: alienSpawnRate, target: self, selector: #selector(addChairAlien), userInfo: nil, repeats: true)
             
 //            motionManager.accelerometerUpdateInterval = 0.2
 //            motionManager.startAccelerometerUpdates(to: OperationQueue.current!) { (data: CMAccelerometerData?, error: Error?) in
@@ -70,31 +71,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
-//    
-//    func touchDown(atPoint pos : CGPoint) {
-//        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-//            n.position = pos
-//            n.strokeColor = SKColor.green
-//            self.addChild(n)
-//        }
-//    }
-//    
-//    func touchMoved(toPoint pos : CGPoint) {
-//        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-//            n.position = pos
-//            n.strokeColor = SKColor.blue
-//            self.addChild(n)
-//        }
-//    }
-//    
-//    func touchUp(atPoint pos : CGPoint) {
-//        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-//            n.position = pos
-//            n.strokeColor = SKColor.red
-//            self.addChild(n)
-//        }
-//    }
-//    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
         let location = touch.location(in: self)
@@ -219,6 +195,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
             #endif
             score += 1
+ //           if score > 500 {
+ //               alienSpawnRate = 0.01
+ //           }
         }
     }
     func gameEnd() {
