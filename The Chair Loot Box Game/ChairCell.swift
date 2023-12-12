@@ -2,7 +2,7 @@
 //  ChairCell.swift
 //  The Chair Loot Box Game
 //
-//  Created by Guest User on 12/12/23.
+//  Created by Dylan Sarell on 12/12/23.
 //
 
 import UIKit

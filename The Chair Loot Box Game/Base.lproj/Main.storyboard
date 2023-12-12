@@ -28,6 +28,46 @@
             </objects>
             <point key="canvasLocation" x="1420.6106870229007" y="0.70422535211267612"/>
         </scene>
+        <!--OpenBox-->
+        <scene sceneID="CdU-Pt-zay">
+            <objects>
+                <viewController title="OpenBox" id="Dhk-6a-VMQ" customClass="OpenBoxViewController" customModule="The_Chair_Loot_Box_Game" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="iZ7-z0-cTH">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="kidChair" translatesAutoresizingMaskIntoConstraints="NO" id="tcy-M7-OWw">
+                                <rect key="frame" x="0.0" y="203" width="393" height="515"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Congrats You Got A " textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qeF-hX-sbm">
+                                <rect key="frame" x="45" y="103" width="302" height="92"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="28"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Dp0-uM-rAd"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="tcy-M7-OWw" firstAttribute="centerY" secondItem="iZ7-z0-cTH" secondAttribute="centerY" id="1ea-Rp-1bt"/>
+                            <constraint firstItem="tcy-M7-OWw" firstAttribute="top" secondItem="Dp0-uM-rAd" secondAttribute="top" constant="100" id="CL2-kk-WWU"/>
+                            <constraint firstItem="tcy-M7-OWw" firstAttribute="leading" secondItem="iZ7-z0-cTH" secondAttribute="leading" id="Kvx-y3-iHx"/>
+                            <constraint firstItem="Dp0-uM-rAd" firstAttribute="bottom" secondItem="tcy-M7-OWw" secondAttribute="bottom" constant="100" id="MT9-vk-oed"/>
+                            <constraint firstItem="tcy-M7-OWw" firstAttribute="centerX" secondItem="iZ7-z0-cTH" secondAttribute="centerX" id="UyE-sv-4T9"/>
+                            <constraint firstAttribute="trailing" secondItem="tcy-M7-OWw" secondAttribute="trailing" id="ZSM-fX-dnx"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Open!" id="pbC-Tn-Y7g"/>
+                    <connections>
+                        <outlet property="chairImage" destination="tcy-M7-OWw" id="u0G-Lc-en1"/>
+                        <outlet property="chairTypeLabel" destination="qeF-hX-sbm" id="SoY-Xf-0mT"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cbe-Nb-DbI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="449.61832061068702" y="-673.23943661971839"/>
+        </scene>
         <!--ChairViewController-->
         <scene sceneID="8pd-mc-nzY">
             <objects>
@@ -57,12 +97,21 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Cost: 00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1ed-1Q-IGC">
-                                <rect key="frame" x="86" y="561" width="219" height="47"/>
+                                <rect key="frame" x="60" y="561" width="274" height="47"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cmG-uB-Vvh">
+                                <rect key="frame" x="170" y="616" width="54" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="tinted" title="Buy"/>
+                                <connections>
+                                    <action selector="buyButton:" destination="Fsn-aJ-Hfv" eventType="touchUpInside" id="Soe-r8-68D"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="jUy-R5-PKA"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -73,7 +122,10 @@
                     </view>
                     <navigationItem key="navigationItem" title="Chair Loot Boxes" id="Npf-2z-ynq"/>
                     <connections>
+                        <outlet property="costLabel" destination="1ed-1Q-IGC" id="lS6-uk-cbK"/>
+                        <outlet property="lootBox" destination="RGt-Vv-xO8" id="kTL-a9-nPA"/>
                         <outlet property="totalScore" destination="qc7-L2-qcW" id="H0g-69-pbu"/>
+                        <segue destination="Dhk-6a-VMQ" kind="show" identifier="OpenBox" id="cJz-g4-OO3"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PuO-HP-06C" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -172,6 +224,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="kidChair" width="600" height="600"/>
         <image name="lootBox" width="489" height="434"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
