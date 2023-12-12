@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		AC35AAD92B27869C0000CAB3 /* ChairViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC35AAD82B27869C0000CAB3 /* ChairViewController.swift */; };
 		AC35AADB2B278FA70000CAB3 /* CollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC35AADA2B278FA70000CAB3 /* CollectionViewController.swift */; };
+		ACC720EF2B28F7330041173C /* ChairCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACC720EE2B28F7330041173C /* ChairCell.swift */; };
 		ACFBFB842B04458E001E84AA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACFBFB832B04458E001E84AA /* AppDelegate.swift */; };
 		ACFBFB862B04458E001E84AA /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = ACFBFB852B04458E001E84AA /* GameScene.sks */; };
 		ACFBFB882B04458E001E84AA /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = ACFBFB872B04458E001E84AA /* Actions.sks */; };
@@ -22,6 +23,7 @@
 /* Begin PBXFileReference section */
 		AC35AAD82B27869C0000CAB3 /* ChairViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChairViewController.swift; sourceTree = "<group>"; };
 		AC35AADA2B278FA70000CAB3 /* CollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewController.swift; sourceTree = "<group>"; };
+		ACC720EE2B28F7330041173C /* ChairCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChairCell.swift; sourceTree = "<group>"; };
 		ACFBFB802B04458E001E84AA /* The Chair Loot Box Game.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "The Chair Loot Box Game.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ACFBFB832B04458E001E84AA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ACFBFB852B04458E001E84AA /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -73,6 +75,7 @@
 				ACFBFB8D2B04458E001E84AA /* Main.storyboard */,
 				ACFBFB902B04458F001E84AA /* Assets.xcassets */,
 				ACFBFB922B04458F001E84AA /* LaunchScreen.storyboard */,
+				ACC720EE2B28F7330041173C /* ChairCell.swift */,
 			);
 			path = "The Chair Loot Box Game";
 			sourceTree = "<group>";
@@ -155,6 +158,7 @@
 				AC35AAD92B27869C0000CAB3 /* ChairViewController.swift in Sources */,
 				ACFBFB842B04458E001E84AA /* AppDelegate.swift in Sources */,
 				AC35AADB2B278FA70000CAB3 /* CollectionViewController.swift in Sources */,
+				ACC720EF2B28F7330041173C /* ChairCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

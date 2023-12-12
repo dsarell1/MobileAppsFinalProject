@@ -11,11 +11,11 @@ import UIKit
 import CoreMotion
 
 
-//enum CollisionTypes: UInt32 {
-//    case player = 1
-//    case alienChair = 2
-//    case blastHit = 3
-//}
+enum CollisionTypes: UInt32 {
+    case playerC = 1
+    case alienChairC = 2
+    case blastHitC = 4
+}
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
 
@@ -25,27 +25,26 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             self.scoreLabel.text = "Score: \(self.score)"
         }
     }
+    var gameOverLabel: SKLabelNode!
     var gameOver = false
     var player: SKSpriteNode!
     
     var gameTimer: Timer!
     
-    let alienCategory: UInt32 = 0x1 << 1
-    let blasterCategory: UInt32 = 0x1 << 1
-    let playerCategory: UInt32 = 0x1 << 1
-    
     let motionManager = CMMotionManager()
     var xAcceleration: CGFloat = 0
+    var lastTouchPos: CGPoint?
     
     override func didMove(to view: SKView) {
         if !gameOver {
             player = SKSpriteNode(imageNamed: "Spaceship.png")
+            player.name = "player"
             player.size = CGSize(width: 75.0, height: 75.0)
             player.position = CGPoint(x: 0, y: -500)
             
             player.physicsBody = SKPhysicsBody(circleOfRadius: player.size.width/1.5)
-            player.physicsBody?.categoryBitMask = playerCategory
-            player.physicsBody?.contactTestBitMask = alienCategory
+            player.physicsBody?.categoryBitMask = CollisionTypes.playerC.rawValue
+            player.physicsBody?.contactTestBitMask = CollisionTypes.alienChairC.rawValue
             player.physicsBody?.collisionBitMask = 0
             self.addChild(player)
             
@@ -61,13 +60,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(addChairAlien), userInfo: nil, repeats: true)
             
-            motionManager.accelerometerUpdateInterval = 0.2
-            motionManager.startAccelerometerUpdates(to: OperationQueue.current!) { (data: CMAccelerometerData?, error: Error?) in
-                if let accelerometerData = data {
-                    let acceleration = accelerometerData.acceleration
-                    self.xAcceleration = CGFloat(acceleration.x * 0.75 + self.xAcceleration * 0.25)
-                }
-            }
+//            motionManager.accelerometerUpdateInterval = 0.2
+//            motionManager.startAccelerometerUpdates(to: OperationQueue.current!) { (data: CMAccelerometerData?, error: Error?) in
+//                if let accelerometerData = data {
+//                    let acceleration = accelerometerData.acceleration
+//                    self.xAcceleration = CGFloat(acceleration.x * 0.75 + self.xAcceleration * 0.25)
+//                }
+//            }
         }
     }
     
@@ -96,34 +95,27 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 //        }
 //    }
 //    
-//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        if let label = self.label {
-//            label.run(SKAction.init(named: "Pulse")!, withKey: "fadeInOut")
-//        }
-//        
-//        for t in touches { self.touchDown(atPoint: t.location(in: self)) }
-//    }
-//    
-//    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        for t in touches { self.touchMoved(toPoint: t.location(in: self)) }
-//    }
-//    
-//    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
-//    }
-//    
-//    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
-//    }
-//    
-//
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let touch = touches.first else { return }
+        let location = touch.location(in: self)
+        lastTouchPos = location
+    }
+    
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let touch = touches.first else { return }
+        let location = touch.location(in: self)
+        lastTouchPos = location
+    }
+    
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         fireBlast()
+        lastTouchPos = nil
     }
     
     @objc func addChairAlien() {
         if !gameOver {
             let alien = SKSpriteNode(imageNamed: "ChairAlien.png")
+            alien.name = "chairAlien"
             alien.size = CGSize(width: 75.0, height: 75.0)
             let randomAlienPosition = GKRandomDistribution(lowestValue: -300, highestValue: 300)
             
@@ -132,10 +124,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             alien.position = CGPoint(x: position, y: (self.view?.frame.size.height ?? 10) + alien.size.height)
             
             alien.physicsBody = SKPhysicsBody(rectangleOf: alien.size)
-            alien.physicsBody?.isDynamic = true
+            alien.physicsBody?.isDynamic = false
             
-            alien.physicsBody?.categoryBitMask = alienCategory
-            alien.physicsBody?.contactTestBitMask = blasterCategory | playerCategory
+            alien.physicsBody?.categoryBitMask = CollisionTypes.alienChairC.rawValue
+            alien.physicsBody?.contactTestBitMask = CollisionTypes.blastHitC.rawValue | CollisionTypes.playerC.rawValue
             alien.physicsBody?.collisionBitMask = 0
             self.addChild(alien)
             let animationDur = 6.0
@@ -149,13 +141,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if !gameOver {
             //self.run(SKAction.playSoundFileNamed("sound file", waitForCompletion: false))
             let blastNode = SKSpriteNode(imageNamed: "Spaceship Blast.png")
+            blastNode.name = "blastShot"
             blastNode.size = CGSize(width: 50.0, height: 50.0)
             blastNode.position = player.position
             blastNode.position.y += 5
             blastNode.physicsBody = SKPhysicsBody(circleOfRadius: blastNode.size.width / 2)
             blastNode.physicsBody?.isDynamic = true
-            blastNode.physicsBody?.categoryBitMask = blasterCategory
-            blastNode.physicsBody?.contactTestBitMask = alienCategory
+            blastNode.physicsBody?.categoryBitMask = CollisionTypes.blastHitC.rawValue
+            blastNode.physicsBody?.contactTestBitMask = CollisionTypes.alienChairC.rawValue
             blastNode.physicsBody?.collisionBitMask = 0
             blastNode.physicsBody?.usesPreciseCollisionDetection = true
             
@@ -171,54 +164,77 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func didBegin(_ contact: SKPhysicsContact) {
         
-        var firstBody:SKPhysicsBody
-        var secondBody:SKPhysicsBody
-//        if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask {
-            firstBody = contact.bodyA
-            secondBody = contact.bodyB
-//            print("inif")
-//        }
-//        else {
-//            print("inelse")
-//            secondBody = contact.bodyA
-//            firstBody = contact.bodyB
-//        }
+        guard let firstBody = contact.bodyA.node else { return }
+        guard let secondBody = contact.bodyB.node else { return }
         
-        /*if firstBody.categoryBitMask == blasterCategory && secondBody.categoryBitMask == alienCategory {
-            blastCollideWithChair(blast: firstBody.node as! SKSpriteNode, alien: secondBody.node as! SKSpriteNode)
-            print("blastChair")
-        } else */if firstBody.categoryBitMask == playerCategory && secondBody.categoryBitMask == alienCategory {
-            playerCollided(with: firstBody.node as! SKSpriteNode)
-            print("playerAlien")
-        } else if secondBody.categoryBitMask == playerCategory && firstBody.categoryBitMask == alienCategory {
-            playerCollided(with: secondBody.node as! SKSpriteNode)
-            print("AlienPlayer")
+        if firstBody == player {
+            playerCollided(with: secondBody)
+        } else if secondBody == player {
+            playerCollided(with: firstBody)
+        } else if firstBody != player && secondBody != player {
+            blastCollideWithChair(blast: firstBody, alien: secondBody)
         }
-            
     }
-    func blastCollideWithChair(blast:SKSpriteNode, alien:SKSpriteNode) {
+    func blastCollideWithChair(blast:SKNode, alien:SKNode) {
         blast.removeFromParent()
         alien.removeFromParent()
         score += 5
     }
-    func playerCollided(with node: SKSpriteNode) {
-        gameOver = true
-        node.removeFromParent()
+    func playerCollided(with node: SKNode) {
+        if node.name == "chairAlien" {
+            gameEnd()
+            node.removeFromParent()
+            player.removeFromParent()
+
+        }
+        else if node.name == "blastShot" {
+            return
+        }
     }
     override func didSimulatePhysics() {
         player.position.x += xAcceleration * 50
-        if player.position.x < -20 {
-            player.position = CGPoint(x: self.size.width + 20, y: player.position.y)
+        if player.position.x < -300 {
+            player.position = CGPoint(x: 300, y: player.position.y)
         }
-        else if player.position.x > self.size.width + 20 {
-            player.position = CGPoint(x: -20, y: player.position.y)
+        else if player.position.x > 300 {
+            player.position = CGPoint(x: -300, y: player.position.y)
         }
     }
     
     override func update(_ currentTime: TimeInterval) {
         if !gameOver {
+            #if targetEnvironment(simulator)
             // Called before each frame is rendered
+            if let lastTouchPos = lastTouchPos {
+                let diff = CGPoint(x: lastTouchPos.x - player.position.x, y: lastTouchPos.y - player.position.y)
+                physicsWorld.gravity = CGVector(dx: diff.x / 100, dy: 0)
+            }
+            #else
+            motionManager.accelerometerUpdateInterval = 0.2
+            motionManager.startAccelerometerUpdates(to: OperationQueue.current!) { (data: CMAccelerometerData?, error: Error?) in
+                if let accelerometerData = data {
+                    let acceleration = accelerometerData.acceleration
+                    self.xAcceleration = CGFloat(acceleration.x * 0.75 + self.xAcceleration * 0.25)
+                }
+            }
+            #endif
             score += 1
+        }
+    }
+    func gameEnd() {
+        gameOver = true
+        gameOverLabel = SKLabelNode(text: "Game Over!")
+        gameOverLabel.position = CGPoint(x: 0, y: 0)
+        gameOverLabel.fontSize = 50
+        gameOverLabel.fontColor = UIColor.green
+        self.addChild(gameOverLabel)
+        if let gameMoney = UserDefaults.standard.string(forKey: "LootBoxMoney") {
+            var gameScore = (Int(gameMoney) ?? 0)
+            gameScore += score
+            UserDefaults.standard.setValue(gameScore, forKey: "LootBoxMoney")
+        }
+        else {
+            UserDefaults.standard.setValue(score, forKey: "LootBoxMoney")
         }
     }
 }
