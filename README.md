@@ -1,5 +1,6 @@
 # Chair Loot Box Game!
  Made by Dylan Sarell
+ 
  For Mobile Apps In IOS Programming Final Project
 
 # General Idea
