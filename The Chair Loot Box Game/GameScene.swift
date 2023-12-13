@@ -91,14 +91,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             restartButton.position = CGPoint(x: frame.midX, y: frame.midY + 100)
             self.gameTimer?.invalidate()
             gameTimer = Timer.scheduledTimer(timeInterval: alienSpawnRate, target: self, selector: #selector(addChairAlien), userInfo: nil, repeats: true)
-            
-//            motionManager.accelerometerUpdateInterval = 0.2
-//            motionManager.startAccelerometerUpdates(to: OperationQueue.current!) { (data: CMAccelerometerData?, error: Error?) in
-//                if let accelerometerData = data {
-//                    let acceleration = accelerometerData.acceleration
-//                    self.xAcceleration = CGFloat(acceleration.x * 0.75 + self.xAcceleration * 0.25)
-//                }
-//            }
         }
     }
     
