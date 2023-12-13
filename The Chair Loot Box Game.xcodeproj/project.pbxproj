@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AC2BCA992B2957BE00901732 /* GameConfigViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC2BCA982B2957BE00901732 /* GameConfigViewController.swift */; };
 		AC35AAD92B27869C0000CAB3 /* ChairViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC35AAD82B27869C0000CAB3 /* ChairViewController.swift */; };
 		AC35AADB2B278FA70000CAB3 /* CollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC35AADA2B278FA70000CAB3 /* CollectionViewController.swift */; };
 		ACC720EF2B28F7330041173C /* ChairCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACC720EE2B28F7330041173C /* ChairCell.swift */; };
@@ -22,6 +23,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		AC2BCA982B2957BE00901732 /* GameConfigViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameConfigViewController.swift; sourceTree = "<group>"; };
 		AC35AAD82B27869C0000CAB3 /* ChairViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChairViewController.swift; sourceTree = "<group>"; };
 		AC35AADA2B278FA70000CAB3 /* CollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewController.swift; sourceTree = "<group>"; };
 		ACC720EE2B28F7330041173C /* ChairCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChairCell.swift; sourceTree = "<group>"; };
@@ -79,6 +81,7 @@
 				ACFBFB922B04458F001E84AA /* LaunchScreen.storyboard */,
 				ACC720EE2B28F7330041173C /* ChairCell.swift */,
 				ACC720F02B2913B60041173C /* OpenBoxViewController.swift */,
+				AC2BCA982B2957BE00901732 /* GameConfigViewController.swift */,
 			);
 			path = "The Chair Loot Box Game";
 			sourceTree = "<group>";
@@ -156,6 +159,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AC2BCA992B2957BE00901732 /* GameConfigViewController.swift in Sources */,
 				ACFBFB8A2B04458E001E84AA /* GameScene.swift in Sources */,
 				ACFBFB8C2B04458E001E84AA /* GameViewController.swift in Sources */,
 				AC35AAD92B27869C0000CAB3 /* ChairViewController.swift in Sources */,

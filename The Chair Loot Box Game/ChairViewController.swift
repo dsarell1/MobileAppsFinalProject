@@ -10,7 +10,7 @@ import UIKit
 
 class ChairViewController: UIViewController {
     
-    let lootBoxPrice = 100
+    let lootBoxPrice = 100000
 
     @IBOutlet weak var totalScore: UILabel!
     @IBOutlet weak var costLabel: UILabel!
@@ -38,6 +38,9 @@ class ChairViewController: UIViewController {
         if let totalMoney = UserDefaults.standard.string(forKey: "LootBoxMoney") {
             self.money = Int(totalMoney) ?? 0
             print(self.money)
+        }
+        if let chairs = UserDefaults.standard.object(forKey: "ChairCollection") as? [String] {
+            myChairs = chairs
         }
     }
     func setup() {

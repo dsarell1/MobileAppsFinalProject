@@ -27,10 +27,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     var gameOverLabel: SKLabelNode!
     var gameOver = false
+    var restartButton: SKLabelNode!
     var player: SKSpriteNode!
     
     var gameTimer: Timer!
     var alienSpawnRate = 1.0
+    var chairAnimationDur = 6.0
+    var fireAnimationDur = 0.3
+    var startTimer = true
     
     let motionManager = CMMotionManager()
     var xAcceleration: CGFloat = 0
@@ -59,6 +63,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             score = 0
             self.addChild(scoreLabel)
             
+            restartButton = SKLabelNode(text: "Restart")
+            restartButton.name = "RestartButton"
+            restartButton.fontSize = 50
+            restartButton.fontColor = UIColor.red
+            restartButton.position = CGPoint(x: frame.midX, y: frame.midY + 100)
+            self.gameTimer?.invalidate()
             gameTimer = Timer.scheduledTimer(timeInterval: alienSpawnRate, target: self, selector: #selector(addChairAlien), userInfo: nil, repeats: true)
             
 //            motionManager.accelerometerUpdateInterval = 0.2
@@ -75,6 +85,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         guard let touch = touches.first else { return }
         let location = touch.location(in: self)
         lastTouchPos = location
+        let touchedNode = atPoint(location)
+        if touchedNode.name == "RestartButton" {
+            score = 0
+            self.addChild(player)
+            gameOver = false
+            restartButton.removeFromParent()
+            gameOverLabel.removeFromParent()
+        }
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -106,9 +124,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             alien.physicsBody?.contactTestBitMask = CollisionTypes.blastHitC.rawValue | CollisionTypes.playerC.rawValue
             alien.physicsBody?.collisionBitMask = 0
             self.addChild(alien)
-            let animationDur = 6.0
             var actionArray = [SKAction]()
-            actionArray.append(SKAction.move(to: CGPoint(x: position, y: -alien.size.height - 600), duration: animationDur))
+            actionArray.append(SKAction.move(to: CGPoint(x: position, y: -alien.size.height - 600), duration: chairAnimationDur))
             actionArray.append(SKAction.removeFromParent())
             alien.run(SKAction.sequence(actionArray))
         }
@@ -130,9 +147,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             self.addChild(blastNode)
             
-            let animationDur2 = 0.3
             var actionArray = [SKAction]()
-            actionArray.append(SKAction.move(to: CGPoint(x: player.position.x, y: self.frame.size.height + 10), duration: animationDur2))
+            actionArray.append(SKAction.move(to: CGPoint(x: player.position.x, y: self.frame.size.height + 10), duration: fireAnimationDur))
             actionArray.append(SKAction.removeFromParent())
             blastNode.run(SKAction.sequence(actionArray))
         }
@@ -154,7 +170,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func blastCollideWithChair(blast:SKNode, alien:SKNode) {
         blast.removeFromParent()
         alien.removeFromParent()
-        score += 5
+        score += 500
     }
     func playerCollided(with node: SKNode) {
         if node.name == "chairAlien" {
@@ -195,18 +211,52 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
             #endif
             score += 1
- //           if score > 500 {
- //               alienSpawnRate = 0.01
- //           }
+            if score > 60000 {
+                if alienSpawnRate != 0.2 {
+                    alienSpawnRate = 0.2
+                    chairAnimationDur = 2.0
+                    self.gameTimer?.invalidate()
+                    gameTimer = Timer.scheduledTimer(timeInterval: alienSpawnRate, target: self, selector: #selector(addChairAlien), userInfo: nil, repeats: true)
+                }
+            }
+            else if score > 20000 {
+                if alienSpawnRate != 0.4 {
+                    alienSpawnRate = 0.4
+                    chairAnimationDur = 2.0
+                    self.gameTimer?.invalidate()
+                    gameTimer = Timer.scheduledTimer(timeInterval: alienSpawnRate, target: self, selector: #selector(addChairAlien), userInfo: nil, repeats: true)
+                }
+            }
+            else if score > 10000 {
+                if alienSpawnRate != 0.6 {
+                    alienSpawnRate = 0.6
+                    chairAnimationDur = 6.5
+                    self.gameTimer?.invalidate()
+                    gameTimer = Timer.scheduledTimer(timeInterval: alienSpawnRate, target: self, selector: #selector(addChairAlien), userInfo: nil, repeats: true)
+                }
+            }
+            else if score > 5000 {
+                if alienSpawnRate != 0.8 {
+                    alienSpawnRate = 0.8
+                    chairAnimationDur = 3.0
+                    self.gameTimer?.invalidate()
+                    gameTimer = Timer.scheduledTimer(timeInterval: alienSpawnRate, target: self, selector: #selector(addChairAlien), userInfo: nil, repeats: true)
+                }
+            }
         }
     }
     func gameEnd() {
         gameOver = true
+        self.gameTimer?.invalidate()
         gameOverLabel = SKLabelNode(text: "Game Over!")
         gameOverLabel.position = CGPoint(x: 0, y: 0)
         gameOverLabel.fontSize = 50
         gameOverLabel.fontColor = UIColor.green
         self.addChild(gameOverLabel)
+        self.addChild(restartButton)
+        chairAnimationDur = 6.0
+        alienSpawnRate = 1.0
+        gameTimer = Timer.scheduledTimer(timeInterval: alienSpawnRate, target: self, selector: #selector(addChairAlien), userInfo: nil, repeats: true)
         if let gameMoney = UserDefaults.standard.string(forKey: "LootBoxMoney") {
             var gameScore = (Int(gameMoney) ?? 0)
             gameScore += score

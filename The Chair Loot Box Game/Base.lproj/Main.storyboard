@@ -23,10 +23,37 @@
                     <navigationItem key="navigationItem" title="Chair Invaders" id="FUl-5Z-XcK">
                         <barButtonItem key="backBarButtonItem" title="Loot Boxes" id="WLR-vw-0md"/>
                     </navigationItem>
+                    <connections>
+                        <outlet property="settingsButton" destination="Bxg-Bs-c5L" id="3tA-1b-Vn5"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1420.6106870229007" y="0.70422535211267612"/>
+        </scene>
+        <!--Game Settings-->
+        <scene sceneID="7V4-na-2zW">
+            <objects>
+                <viewController id="6Lu-IS-iLI" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="sJn-Q2-VMh">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="0yK-0D-QXd">
+                                <rect key="frame" x="14" y="170" width="365" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </slider>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="tAy-K2-Ych"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Game Settings" id="ZXw-wb-ef4">
+                        <barButtonItem key="backBarButtonItem" title="Game" id="WAa-4q-JT5"/>
+                    </navigationItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9zT-Rr-FYu" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1420.6106870229007" y="719.71830985915494"/>
         </scene>
         <!--OpenBox-->
         <scene sceneID="CdU-Pt-zay">
@@ -66,7 +93,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cbe-Nb-DbI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="449.61832061068702" y="-673.23943661971839"/>
+            <point key="canvasLocation" x="1421" y="-665"/>
         </scene>
         <!--ChairViewController-->
         <scene sceneID="8pd-mc-nzY">
@@ -110,6 +137,16 @@
                                 <buttonConfiguration key="configuration" style="tinted" title="Buy"/>
                                 <connections>
                                     <action selector="buyButton:" destination="Fsn-aJ-Hfv" eventType="touchUpInside" id="Soe-r8-68D"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bxg-Bs-c5L">
+                                <rect key="frame" x="290" y="103" width="87" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Settings"/>
+                                <connections>
+                                    <action selector="settingsAction:" destination="BV1-FR-VrT" eventType="touchUpInside" id="qLO-WG-pTZ"/>
+                                    <segue destination="6Lu-IS-iLI" kind="show" identifier="Settings" id="Bv4-ko-hZT"/>
                                 </connections>
                             </button>
                         </subviews>
