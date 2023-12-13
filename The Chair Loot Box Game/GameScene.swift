@@ -10,6 +10,11 @@ import GameplayKit
 import UIKit
 import CoreMotion
 
+var chairAlienTypes = ["ChairAlien.png", "ChairAlien2.png", "ChairAlien3.png"]
+
+//var alienSpawnRate = 1.0
+//var chairAnimationDur = 6.0
+//var fireAnimationDur = 0.3
 
 enum CollisionTypes: UInt32 {
     case playerC = 1
@@ -42,6 +47,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func didMove(to view: SKView) {
         if !gameOver {
+            if let alienRate = UserDefaults.standard.string(forKey: "AlienSpawnRate") {
+                alienSpawnRate = Double(alienRate) ?? 1.0
+            }
+            if let chairDur = UserDefaults.standard.string(forKey: "ChairAnimationDur") {
+                chairAnimationDur = Double(chairDur) ?? 6.0
+            }
+            if let fireDur = UserDefaults.standard.string(forKey: "FireAnimationDur") {
+                fireAnimationDur = Double(fireDur) ?? 0.3
+            }
+            
+            
             player = SKSpriteNode(imageNamed: "Spaceship.png")
             player.name = "player"
             player.size = CGSize(width: 75.0, height: 75.0)
@@ -108,7 +124,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     @objc func addChairAlien() {
         if !gameOver {
-            let alien = SKSpriteNode(imageNamed: "ChairAlien.png")
+            let alien = SKSpriteNode(imageNamed: chairAlienTypes.randomElement()!)
             alien.name = "chairAlien"
             alien.size = CGSize(width: 75.0, height: 75.0)
             let randomAlienPosition = GKRandomDistribution(lowestValue: -300, highestValue: 300)

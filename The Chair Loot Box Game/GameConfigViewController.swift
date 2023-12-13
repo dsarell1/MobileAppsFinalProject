@@ -9,21 +9,60 @@ import UIKit
 
 class GameConfigViewController: UIViewController {
 
+    
+    @IBOutlet weak var alienSpawnRateLabel: UILabel!
+    @IBOutlet weak var chairSpeedLabel: UILabel!
+    @IBOutlet weak var blasterSpeedLabel: UILabel!
+    
+    
+    @IBOutlet weak var spawnRate: UISlider!
+    @IBOutlet weak var chairSpeed: UISlider!
+    @IBOutlet weak var blasterSpeed: UISlider!
+    
+    @IBAction func AlienSpawnRateSlider(_ sender: UISlider) {
+        
+        let rate = sender.value
+        self.alienSpawnRateLabel.text = "Alien Spawn Rate: " + String(sender.value)
+        UserDefaults.standard.setValue(rate, forKey: "AlienSpawnRate")
+    }
+    
+    @IBAction func AlienChairSpeedSlider(_ sender: UISlider) {
+        let cSpeed = sender.value
+        self.chairSpeedLabel.text = "Alien Chair Speed: " + String(sender.value)
+        UserDefaults.standard.setValue(cSpeed, forKey: "ChairAnimationDur")
+    }
+    @IBAction func blasterFireSpeedSlider(_ sender: UISlider) {
+        let bSpeed = sender.value
+        self.blasterSpeedLabel.text = "Blaster Fire Speed: " + String(sender.value)
+        UserDefaults.standard.setValue(bSpeed, forKey: "FireAnimationDur")
+    }
+    
+    @IBAction func DefaultsButton(_ sender: UIButton) {
+        let alienRate = 1.0
+        UserDefaults.standard.setValue(alienRate, forKey: "AlienSpawnRate")
+        let chairDur = 6.0
+        UserDefaults.standard.setValue(chairDur, forKey: "ChairAnimationDur")
+        let fireDur = 0.3
+        UserDefaults.standard.setValue(fireDur, forKey: "FireAnimationDur")
+        
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
     }
-    
+    override func viewWillAppear(_ animated: Bool) {
+        if let alienRate = UserDefaults.standard.string(forKey: "AlienSpawnRate") {
+            spawnRate.value = Float(alienRate) ?? 1.0
+        }
+        if let chairDur = UserDefaults.standard.string(forKey: "ChairAnimationDur") {
+            chairSpeed.value = Float(chairDur) ?? 6.0
+        }
+        if let fireDur = UserDefaults.standard.string(forKey: "FireAnimationDur") {
+            blasterSpeed.value = Float(fireDur) ?? 0.3
+        }
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
     }
-    */
 
 }
