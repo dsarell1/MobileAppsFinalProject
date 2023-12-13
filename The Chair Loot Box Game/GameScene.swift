@@ -11,10 +11,7 @@ import UIKit
 import CoreMotion
 
 var chairAlienTypes = ["ChairAlien.png", "ChairAlien2.png", "ChairAlien3.png"]
-
-//var alienSpawnRate = 1.0
-//var chairAnimationDur = 6.0
-//var fireAnimationDur = 0.3
+var defaultMode = true
 
 enum CollisionTypes: UInt32 {
     case playerC = 1
@@ -55,6 +52,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
             if let fireDur = UserDefaults.standard.string(forKey: "FireAnimationDur") {
                 fireAnimationDur = Double(fireDur) ?? 0.3
+            }
+            if let gameMode = UserDefaults.standard.string(forKey: "DefaultMode") {
+                if Int(gameMode) == 1 {
+                    defaultMode = true
+                }
+                else if Int(gameMode) == 0 {
+                    defaultMode = false
+                }
             }
             
             
@@ -186,7 +191,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func blastCollideWithChair(blast:SKNode, alien:SKNode) {
         blast.removeFromParent()
         alien.removeFromParent()
-        score += 500
+        score += 100
     }
     func playerCollided(with node: SKNode) {
         if node.name == "chairAlien" {
@@ -226,37 +231,55 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 }
             }
             #endif
-            score += 1
-            if score > 60000 {
-                if alienSpawnRate != 0.2 {
-                    alienSpawnRate = 0.2
-                    chairAnimationDur = 2.0
-                    self.gameTimer?.invalidate()
-                    gameTimer = Timer.scheduledTimer(timeInterval: alienSpawnRate, target: self, selector: #selector(addChairAlien), userInfo: nil, repeats: true)
+            if defaultMode {
+                score += 5
+                if score > 120000 {
+                    if alienSpawnRate != 0.2 {
+                        alienSpawnRate = 0.1
+                        chairAnimationDur = 2.0
+                        self.gameTimer?.invalidate()
+                        gameTimer = Timer.scheduledTimer(timeInterval: alienSpawnRate, target: self, selector: #selector(addChairAlien), userInfo: nil, repeats: true)
+                    }
                 }
-            }
-            else if score > 20000 {
-                if alienSpawnRate != 0.4 {
-                    alienSpawnRate = 0.4
-                    chairAnimationDur = 2.0
-                    self.gameTimer?.invalidate()
-                    gameTimer = Timer.scheduledTimer(timeInterval: alienSpawnRate, target: self, selector: #selector(addChairAlien), userInfo: nil, repeats: true)
+                else if score > 90000 {
+                    if alienSpawnRate != 0.2 {
+                        alienSpawnRate = 0.2
+                        chairAnimationDur = 2.0
+                        self.gameTimer?.invalidate()
+                        gameTimer = Timer.scheduledTimer(timeInterval: alienSpawnRate, target: self, selector: #selector(addChairAlien), userInfo: nil, repeats: true)
+                    }
+                }                
+                else if score > 50000 {
+                    if alienSpawnRate != 0.75 {
+                        alienSpawnRate = 0.75
+                        chairAnimationDur = 1.0
+                        self.gameTimer?.invalidate()
+                        gameTimer = Timer.scheduledTimer(timeInterval: alienSpawnRate, target: self, selector: #selector(addChairAlien), userInfo: nil, repeats: true)
+                    }
                 }
-            }
-            else if score > 10000 {
-                if alienSpawnRate != 0.6 {
-                    alienSpawnRate = 0.6
-                    chairAnimationDur = 6.5
-                    self.gameTimer?.invalidate()
-                    gameTimer = Timer.scheduledTimer(timeInterval: alienSpawnRate, target: self, selector: #selector(addChairAlien), userInfo: nil, repeats: true)
+                else if score > 20000 {
+                    if alienSpawnRate != 0.4 {
+                        alienSpawnRate = 0.4
+                        chairAnimationDur = 2.0
+                        self.gameTimer?.invalidate()
+                        gameTimer = Timer.scheduledTimer(timeInterval: alienSpawnRate, target: self, selector: #selector(addChairAlien), userInfo: nil, repeats: true)
+                    }
                 }
-            }
-            else if score > 5000 {
-                if alienSpawnRate != 0.8 {
-                    alienSpawnRate = 0.8
-                    chairAnimationDur = 3.0
-                    self.gameTimer?.invalidate()
-                    gameTimer = Timer.scheduledTimer(timeInterval: alienSpawnRate, target: self, selector: #selector(addChairAlien), userInfo: nil, repeats: true)
+                else if score > 10000 {
+                    if alienSpawnRate != 0.6 {
+                        alienSpawnRate = 0.6
+                        chairAnimationDur = 6.5
+                        self.gameTimer?.invalidate()
+                        gameTimer = Timer.scheduledTimer(timeInterval: alienSpawnRate, target: self, selector: #selector(addChairAlien), userInfo: nil, repeats: true)
+                    }
+                }
+                else if score > 5000 {
+                    if alienSpawnRate != 0.8 {
+                        alienSpawnRate = 0.8
+                        chairAnimationDur = 3.0
+                        self.gameTimer?.invalidate()
+                        gameTimer = Timer.scheduledTimer(timeInterval: alienSpawnRate, target: self, selector: #selector(addChairAlien), userInfo: nil, repeats: true)
+                    }
                 }
             }
         }
@@ -270,8 +293,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         gameOverLabel.fontColor = UIColor.green
         self.addChild(gameOverLabel)
         self.addChild(restartButton)
-        chairAnimationDur = 6.0
-        alienSpawnRate = 1.0
+        if let alienRate = UserDefaults.standard.string(forKey: "AlienSpawnRate") {
+            alienSpawnRate = Double(alienRate) ?? 1.0
+        } else { alienSpawnRate = 1.0 }
+        
+        if let chairDur = UserDefaults.standard.string(forKey: "ChairAnimationDur") {
+            chairAnimationDur = Double(chairDur) ?? 6.0
+        } else { chairAnimationDur = 6.0 }
+        if let fireDur = UserDefaults.standard.string(forKey: "FireAnimationDur") {
+            fireAnimationDur = Double(fireDur) ?? 0.3
+        } else { fireAnimationDur = 0.3 }
+        
         gameTimer = Timer.scheduledTimer(timeInterval: alienSpawnRate, target: self, selector: #selector(addChairAlien), userInfo: nil, repeats: true)
         if let gameMoney = UserDefaults.standard.string(forKey: "LootBoxMoney") {
             var gameScore = (Int(gameMoney) ?? 0)

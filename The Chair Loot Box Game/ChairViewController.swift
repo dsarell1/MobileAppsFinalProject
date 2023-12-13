@@ -42,6 +42,16 @@ class ChairViewController: UIViewController {
         if let chairs = UserDefaults.standard.object(forKey: "ChairCollection") as? [String] {
             myChairs = chairs
         }
+        if let mode = UserDefaults.standard.string(forKey: "DefaultMode") {
+            if Int(mode) == 1 {
+                defaultMode = true
+            }
+            else if Int(mode) == 0 {
+                defaultMode = false
+            }
+        } else {
+            UserDefaults.standard.setValue(true, forKey: "DefaultMode")
+        }
     }
     func setup() {
         costLabel.text = "Cost: \(self.lootBoxPrice) Moneyz"
